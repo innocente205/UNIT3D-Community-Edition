@@ -287,6 +287,11 @@ Route::group(['middleware' => 'language'], function () {
             Route::get('/{username}', 'WarningController@show')->name('warnings.show');
         });
 
+		// User
+			Route::get('/members', 'UserController@members')->name('members');
+			Route::get('/members/results', 'UserController@userSearch')->name('userSearch');
+			Route::get('/{username}.{id}', 'UserController@profile')->name('profile');
+
         // Users System
         Route::group(['prefix' => 'users'], function () {
             Route::get('/{username}', 'UserController@show')->name('users.show');
