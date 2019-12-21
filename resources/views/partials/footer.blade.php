@@ -47,6 +47,7 @@
         <div class="col-md-2 l-footer-section">
             <h2 class="l-footer-section-title">@lang('common.info')</h2>
             <ul>
+                <li><a href="{{ route('members') }}">@lang('common.members')</a></li>
                 <li><a href="{{ route('staff') }}">@lang('common.staff')</a></li>
                 <li><a href="{{ route('internal') }}">@lang('common.internal')</a></li>
                 <li><a href="{{ route('blacklist') }}">@lang('common.blacklist')</a></li>
