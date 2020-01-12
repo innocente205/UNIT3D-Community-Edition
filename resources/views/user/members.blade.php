@@ -54,7 +54,7 @@
                             @endif
                         </td>-->
                         <td>
-                            <a href="{{ route('profile', ['username' => $user->username, 'id' => $user->id]) }}">{{ $user->username }}</a>
+                            <a href="{{ route('users.show', ['username' => $user->username]) }}">{{ $user->username }}</a>
                         </td>
                         <td>{{ $user->group->name }}</td>
                         <td>{{ date('d M Y', strtotime($user->created_at)) }}</td>
