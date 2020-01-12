@@ -60,52 +60,11 @@ class UserController extends Controller
     {
         $users = User::where([
             ['username', 'like', '%'.$request->input('username').'%'],
-        ])->paginate(25);
+        ])->orderBy('username')->paginate(25);
         $users->setPath('?username='.$request->input('username'));
         return view('user.members')->with('users', $users);
     }
 
-	    /**
-     * Get A User Profile.
-     *
-     * @param $slug
-     * @param $id
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function profile($slug, $id)
-    {
-        $user = User::with(['privacy', 'history'])->findOrFail($id);
-        $groups = Group::all();
-        $followers = Follow::where('target_id', '=', $id)->latest()->limit(25)->get();
-        $history = $user->history;
-        $warnings = Warning::where('user_id', '=', $id)->whereNotNull('torrent')->where('active', '=', 1)->take(3)->get();
-        $hitrun = Warning::where('user_id', '=', $id)->latest()->paginate(10);
-        $bonupload = BonTransactions::where('sender', '=', $id)->where([['name', 'like', '%Upload%']])->sum('cost');
-        $bondownload = BonTransactions::where('sender', '=', $id)->where([['name', 'like', '%Download%']])->sum('cost');
-        $realupload = $user->uploaded - $bonupload;
-        $realdownload = $user->downloaded + $bondownload;
-        $invitedBy = Invite::where('accepted_by', '=', $user->id)->first();
-        $requested = TorrentRequest::where('user_id', '=', $user->id)->count();
-        $filled = TorrentRequest::where('filled_by', '=', $user->id)->whereNotNull('approved_by')->count();
-        return view('user.profile', [
-            'route'        => 'profile',
-            'user'         => $user,
-            'groups'       => $groups,
-            'followers'    => $followers,
-            'history'      => $history,
-            'warnings'     => $warnings,
-            'hitrun'       => $hitrun,
-            'bonupload'    => $bonupload,
-            'realupload'   => $realupload,
-            'bondownload'  => $bondownload,
-            'realdownload' => $realdownload,
-            'requested'    => $requested,
-            'filled'       => $filled,
-            'invitedBy'    => $invitedBy,
-        ]);
-    }
-	
     /**
      * Show A User.
      *
